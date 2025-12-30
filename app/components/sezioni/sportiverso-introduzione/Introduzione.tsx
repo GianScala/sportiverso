@@ -1,7 +1,14 @@
 'use client';
 
-import { memo, useRef, useEffect, useState } from 'react';
+import { memo, useRef, useEffect, useState, useCallback } from 'react';
 import styles from './Introduzione.module.css';
+
+declare global {
+  interface Window {
+    YT: typeof YT;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 interface IntroduzioneProps {
   badge?: string;
@@ -32,33 +39,145 @@ function Introduzione({
   showScrollIndicator = true,
 }: IntroduzioneProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<YT.Player | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const isYouTube =
     backgroundVideo.includes('youtube.com') ||
     backgroundVideo.includes('youtu.be');
 
-  // Extract YouTube video ID
-  const getYouTubeId = (url: string): string | null => {
-    // Handle youtu.be format
+  const getYouTubeId = useCallback((url: string): string | null => {
     if (url.includes('youtu.be/')) {
-      const id = url.split('youtu.be/')[1]?.split('?')[0];
-      return id || null;
+      return url.split('youtu.be/')[1]?.split('?')[0] || null;
     }
-    // Handle youtube.com/watch?v= format
     if (url.includes('youtube.com/watch')) {
       const urlParams = new URLSearchParams(url.split('?')[1]);
       return urlParams.get('v');
     }
-    // Handle youtube.com/embed/ format
     if (url.includes('youtube.com/embed/')) {
-      const id = url.split('embed/')[1]?.split('?')[0];
-      return id || null;
+      return url.split('embed/')[1]?.split('?')[0] || null;
     }
     return null;
-  };
+  }, []);
 
   const videoId = isYouTube ? getYouTubeId(backgroundVideo) : null;
+
+  useEffect(() => {
+    if (!isYouTube || !videoId) return;
+
+    let isMounted = true;
+
+    const createPlayer = () => {
+      const container = document.getElementById('youtube-player-container');
+      if (!container) return;
+
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // Ignore cleanup errors
+        }
+        playerRef.current = null;
+      }
+
+      container.innerHTML = '<div id="youtube-player"></div>';
+
+      try {
+        playerRef.current = new window.YT.Player('youtube-player', {
+          videoId: videoId,
+          width: '100%',
+          height: '100%',
+          playerVars: {
+            autoplay: 1,
+            mute: 1,
+            controls: 0,
+            loop: 1,
+            playlist: videoId,
+            playsinline: 1,
+            rel: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            iv_load_policy: 3,
+            disablekb: 1,
+            fs: 0,
+            origin: typeof window !== 'undefined' ? window.location.origin : '',
+            enablejsapi: 1,
+          },
+          events: {
+            onReady: (event) => {
+              if (!isMounted) return;
+              event.target.mute();
+              event.target.playVideo();
+              setIsVideoLoaded(true);
+            },
+            onStateChange: (event) => {
+              if (event.data === 0) {
+                event.target.playVideo();
+              }
+              if (event.data === 2) {
+                setTimeout(() => event.target.playVideo(), 100);
+              }
+              if (event.data === 1) {
+                setIsVideoLoaded(true);
+              }
+            },
+          },
+        });
+      } catch {
+        // Ignore player creation errors
+      }
+    };
+
+    const initializeAPI = () => {
+      if (window.YT && window.YT.Player) {
+        setTimeout(createPlayer, 100);
+        return;
+      }
+
+      if (!document.getElementById('youtube-api-script')) {
+        const tag = document.createElement('script');
+        tag.id = 'youtube-api-script';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        tag.async = true;
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        if (firstScriptTag && firstScriptTag.parentNode) {
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        } else {
+          document.head.appendChild(tag);
+        }
+      }
+
+      const previousCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (previousCallback) previousCallback();
+        if (isMounted) setTimeout(createPlayer, 100);
+      };
+
+      const pollInterval = setInterval(() => {
+        if (window.YT && window.YT.Player) {
+          clearInterval(pollInterval);
+          if (isMounted && !playerRef.current) createPlayer();
+        }
+      }, 200);
+
+      setTimeout(() => clearInterval(pollInterval), 10000);
+    };
+
+    const initTimeout = setTimeout(initializeAPI, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(initTimeout);
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // Ignore cleanup errors
+        }
+        playerRef.current = null;
+      }
+    };
+  }, [isYouTube, videoId]);
 
   useEffect(() => {
     if (isYouTube) return;
@@ -76,7 +195,7 @@ function Introduzione({
         await video.play();
         setIsVideoLoaded(true);
       } catch {
-        console.log('Autoplay blocked, waiting for interaction.');
+        // Autoplay blocked
       }
     };
 
@@ -102,28 +221,17 @@ function Introduzione({
 
   return (
     <section className={styles.hero} aria-labelledby="hero-heading">
-      {/* ---------- YOUTUBE MODE ---------- */}
       {isYouTube && videoId ? (
         <div className={styles.videoWrapper}>
-          <iframe
-            className={`${styles.youtubeBackground} ${
-              isVideoLoaded ? styles.fadeIn : ''
-            }`}
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`}
-            title="Background video"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-            allowFullScreen
-            onLoad={() => setIsVideoLoaded(true)}
+          <div
+            id="youtube-player-container"
+            className={`${styles.youtubeBackground} ${isVideoLoaded ? styles.fadeIn : ''}`}
           />
         </div>
       ) : (
-        /* ---------- MP4 MODE ---------- */
         <video
           ref={videoRef}
-          className={`${styles.backgroundVideo} ${
-            isVideoLoaded ? styles.fadeIn : ''
-          }`}
+          className={`${styles.backgroundVideo} ${isVideoLoaded ? styles.fadeIn : ''}`}
           autoPlay
           muted
           loop
