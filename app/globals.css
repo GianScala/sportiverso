@@ -1,0 +1,168 @@
+/* app/globals.css */
+
+:root {
+  /* Base Colors */
+  --black: #12070a;
+  --dark-grey: #2a1a1f;
+  --mid-grey: #a78993;
+  --light-grey: #fff3f6;
+  --white: #ffffff;
+  --border: #ffdce6;
+
+  /* Brand (pink accent only — not used as background) */
+  --header-primary: #e91e63;
+  --header-primary-hover: #d81b60;
+  --header-text-light: #ffffff;
+  --header-text-dark: #1f2937;
+
+  /* HEADER — neutral / clean */
+  --header-bg-glass: rgba(255, 255, 255, 0.94);
+  --header-border-light: rgba(148, 163, 184, 0.18);
+  --header-border-dark: rgba(148, 163, 184, 0.35);
+  --header-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-Index Scale */
+  --z-header: 1000;
+  --z-logo: 1001;
+  --z-menu: 999;
+  --z-backdrop: 998;
+
+  /* Typography */
+  --font-main: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--white);
+  color: var(--black);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container utility */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 999px;
+  border: 1px solid var(--header-primary);
+}
+
+/* Primary — soft pink gradient */
+.btn-primary {
+  background: linear-gradient(135deg, #ff7aa5, #e91e63);
+  color: var(--white);
+  box-shadow: 0 10px 28px rgba(233, 30, 99, 0.22);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ff6b98, #d81b60);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(216, 27, 96, 0.3);
+}
+
+/* Secondary outline */
+.btn-secondary {
+  background: transparent;
+  color: var(--header-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--light-grey);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--header-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Print styles */
+@media print {
+  header,
+  nav,
+  .backdrop {
+    display: none !important;
+  }
+}
