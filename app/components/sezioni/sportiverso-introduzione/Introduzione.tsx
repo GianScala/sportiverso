@@ -39,11 +39,26 @@ function Introduzione({
     backgroundVideo.includes('youtu.be');
 
   // Extract YouTube video ID
-  const videoId = isYouTube
-    ? backgroundVideo
-        .replace('https://youtu.be/', '')
-        .split('v=')?.[1]?.split('&')?.[0] || backgroundVideo.split('/').pop()
-    : null;
+  const getYouTubeId = (url: string): string | null => {
+    // Handle youtu.be format
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1]?.split('?')[0];
+      return id || null;
+    }
+    // Handle youtube.com/watch?v= format
+    if (url.includes('youtube.com/watch')) {
+      const urlParams = new URLSearchParams(url.split('?')[1]);
+      return urlParams.get('v');
+    }
+    // Handle youtube.com/embed/ format
+    if (url.includes('youtube.com/embed/')) {
+      const id = url.split('embed/')[1]?.split('?')[0];
+      return id || null;
+    }
+    return null;
+  };
+
+  const videoId = isYouTube ? getYouTubeId(backgroundVideo) : null;
 
   useEffect(() => {
     if (isYouTube) return;
@@ -94,7 +109,7 @@ function Introduzione({
             className={`${styles.youtubeBackground} ${
               isVideoLoaded ? styles.fadeIn : ''
             }`}
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0&enablejsapi=1`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`}
             title="Background video"
             frameBorder="0"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
@@ -103,7 +118,6 @@ function Introduzione({
           />
         </div>
       ) : (
-
         /* ---------- MP4 MODE ---------- */
         <video
           ref={videoRef}

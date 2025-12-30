@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-/* ==================== VIDEO BACKGROUND (MP4 mode) ==================== */
+/* ==================== VIDEO BACKGROUND (MP4) ==================== */
 
 .backgroundVideo {
   position: absolute;
@@ -23,6 +23,7 @@
   z-index: -2;
   display: block;
   pointer-events: none;
+  opacity: 0;
 }
 
 /* Hide browser overlay / play icons where possible (WebKit/iOS/ Safari) */
@@ -39,29 +40,36 @@
   display: none !important;
 }
 
-/* ==================== YOUTUBE BACKGROUND (iframe mode) ==================== */
+/* ==================== YOUTUBE BACKGROUND ==================== */
 
 .videoWrapper {
   position: absolute;
   inset: 0;
-  overflow: hidden;
   z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000;
 }
 
 .youtubeBackground {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 177.78vh; /* keep 16:9 ratio */
+  width: 100vw;
   height: 100vh;
+  min-width: 177.78vh; /* 16:9 aspect ratio - ensures video covers viewport */
+  min-height: 56.25vw; /* 16:9 aspect ratio */
   transform: translate(-50%, -50%);
-  pointer-events: none; /* don't block clicks on content */
+  border: none;
+  pointer-events: none;
   opacity: 0;
 }
 
+/* ==================== FADE IN ANIMATION ==================== */
+
 .fadeIn {
   opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease-in-out;
 }
 
 /* ==================== OVERLAY ==================== */
@@ -326,7 +334,8 @@
   .btnPrimary,
   .btnSecondary,
   .scrollWheel,
-  .arrow {
+  .arrow,
+  .fadeIn {
     transition: none;
     animation: none;
   }
