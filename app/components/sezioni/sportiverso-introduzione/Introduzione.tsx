@@ -34,64 +34,92 @@ function Introduzione({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  const isYouTube =
+    backgroundVideo.includes('youtube.com') ||
+    backgroundVideo.includes('youtu.be');
+
+  // Extract YouTube video ID
+  const videoId = isYouTube
+    ? backgroundVideo
+        .replace('https://youtu.be/', '')
+        .split('v=')?.[1]?.split('&')?.[0] || backgroundVideo.split('/').pop()
+    : null;
+
   useEffect(() => {
+    if (isYouTube) return;
+
     const video = videoRef.current;
     if (!video) return;
 
-    // IMPORTANT: Ensure these are set before calling .play()
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
+    video.autoplay = true;
 
-    const playVideo = async () => {
+    const tryPlay = async () => {
       try {
         await video.play();
         setIsVideoLoaded(true);
-      } catch (err) {
-        console.log("Autoplay blocked on first load. Waiting for interaction.");
+      } catch {
+        console.log('Autoplay blocked, waiting for interaction.');
       }
     };
 
-    // Attempt play immediately
-    playVideo();
+    tryPlay();
 
-    // Fallback: If blocked, play as soon as the user touches the screen or scrolls
-    const enableAutoplay = () => {
-      if (video.paused) {
-        video.play().then(() => setIsVideoLoaded(true)).catch(() => {});
-        // Clean up listeners immediately after first success
-        window.removeEventListener('mousedown', enableAutoplay);
-        window.removeEventListener('touchstart', enableAutoplay);
-        window.removeEventListener('scroll', enableAutoplay);
-      }
+    const handleInteraction = () => {
+      tryPlay();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('scroll', handleInteraction);
     };
 
-    window.addEventListener('mousedown', enableAutoplay);
-    window.addEventListener('touchstart', enableAutoplay);
-    window.addEventListener('scroll', enableAutoplay);
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+    window.addEventListener('scroll', handleInteraction);
 
     return () => {
-      window.removeEventListener('mousedown', enableAutoplay);
-      window.removeEventListener('touchstart', enableAutoplay);
-      window.removeEventListener('scroll', enableAutoplay);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('scroll', handleInteraction);
     };
-  }, [backgroundVideo]);
+  }, [backgroundVideo, isYouTube]);
 
   return (
     <section className={styles.hero} aria-labelledby="hero-heading">
-      <video
-        ref={videoRef}
-        className={`${styles.backgroundVideo} ${isVideoLoaded ? styles.fadeIn : ''}`}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        // Ensure this file actually exists in your /public folder!
-        poster="/images/hero-poster.jpg" 
-      >
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
+      {/* ---------- YOUTUBE MODE ---------- */}
+      {isYouTube && videoId ? (
+        <div className={styles.videoWrapper}>
+          <iframe
+            className={`${styles.youtubeBackground} ${
+              isVideoLoaded ? styles.fadeIn : ''
+            }`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0`}
+            title="Background video"
+            frameBorder="0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            onLoad={() => setIsVideoLoaded(true)}
+          />
+        </div>
+      ) : (
+        /* ---------- MP4 MODE ---------- */
+        <video
+          ref={videoRef}
+          className={`${styles.backgroundVideo} ${
+            isVideoLoaded ? styles.fadeIn : ''
+          }`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/images/hero-poster.jpg"
+        >
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+      )}
 
       <div className={styles.overlay} />
 

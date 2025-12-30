@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-/* ==================== VIDEO BACKGROUND ==================== */
+/* ==================== VIDEO BACKGROUND (MP4 mode) ==================== */
 
 .backgroundVideo {
   position: absolute;
@@ -37,6 +37,31 @@
 
 .backgroundVideo::-webkit-media-controls {
   display: none !important;
+}
+
+/* ==================== YOUTUBE BACKGROUND (iframe mode) ==================== */
+
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.youtubeBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 177.78vh; /* keep 16:9 ratio */
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* don't block clicks on content */
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
 /* ==================== OVERLAY ==================== */

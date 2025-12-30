@@ -8,7 +8,9 @@ export default function Home() {
   return (
     <main>
       <Header />
-      <Introduzione backgroundVideo="https://zvygqkkvxigsqwaq.public.blob.vercel-storage.com/hero-kids-video.mp4" />
+
+      <Introduzione backgroundVideo="https://www.youtube.com/watch?v=uq7JPp0YJ4U" />
+
       <Valori />
       <Discipline />
       <Footer />
