@@ -94,16 +94,16 @@ function Introduzione({
             className={`${styles.youtubeBackground} ${
               isVideoLoaded ? styles.fadeIn : ''
             }`}
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0&enablejsapi=1`}
             title="Background video"
             frameBorder="0"
-            allow="autoplay; encrypted-media; picture-in-picture"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
-            loading="lazy"
             onLoad={() => setIsVideoLoaded(true)}
           />
         </div>
       ) : (
+
         /* ---------- MP4 MODE ---------- */
         <video
           ref={videoRef}
