@@ -10,6 +10,7 @@ export default function Home() {
       <Header />
       <Introduzione 
         backgroundVideo="/videos/hero-kids-video.mp4"
+        posterImage="/images/hero-poster.jpg"
       />
       <Valori />
       <Discipline />

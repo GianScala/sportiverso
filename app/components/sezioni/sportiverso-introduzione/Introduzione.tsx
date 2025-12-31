@@ -9,7 +9,7 @@ interface IntroduzioneProps {
   highlightedTitle?: string;
   subtitle?: string;
   backgroundVideo: string;
-  posterImage?: string;
+  posterImage: string; // Required to prevent black screen
   showScrollIndicator?: boolean;
 }
 
@@ -19,74 +19,78 @@ const Introduzione = ({
   highlightedTitle = "Sportiverso",
   subtitle = "Dove il gioco incontra la crescita! Scopri i nostri percorsi educativi pensati per bambini e ragazzi dai 3 ai 14 anni.",
   backgroundVideo,
-  posterImage = "/images/hero-poster.jpg",
+  posterImage,
   showScrollIndicator = true,
 }: IntroduzioneProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [videoStatus, setVideoStatus] = useState<'idle' | 'playing'>('idle');
 
-  const attemptPlay = useCallback(async () => {
+  const forcePlay = useCallback(async () => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || videoStatus === 'playing') return;
 
     try {
-      video.muted = true; // Essential for autoplay
+      video.muted = true;
+      video.defaultMuted = true;
       await video.play();
-      setIsVideoPlaying(true);
-    } catch (error) {
-      console.log("Autoplay prevented. Waiting for user interaction...");
+      setVideoStatus('playing');
+    } catch (err) {
+      // Browser is still blocking; the event listeners below will catch the next move
     }
-  }, []);
+  }, [videoStatus]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // 1. Initial attempt
-    attemptPlay();
+    // Aggressive list of events to "unlock" the video engine
+    const interactionEvents = [
+      'pointermove', 
+      'touchstart', 
+      'scroll', 
+      'wheel', 
+      'click', 
+      'keydown'
+    ];
 
-    // 2. Interaction listener (unblocks video on first scroll or touch)
-    const handleInteraction = () => {
-      if (!isVideoPlaying) attemptPlay();
-      window.removeEventListener('scroll', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
+    const handleUnlock = () => {
+      forcePlay();
+      if (videoStatus === 'playing') {
+        interactionEvents.forEach(e => window.removeEventListener(e, handleUnlock));
+      }
     };
 
-    window.addEventListener('scroll', handleInteraction, { passive: true });
-    window.addEventListener('touchstart', handleInteraction, { passive: true });
-    window.addEventListener('click', handleInteraction);
+    // Add listeners
+    interactionEvents.forEach(e => window.addEventListener(e, handleUnlock, { passive: true }));
 
-    // 3. Intersection Observer (Pause when not in view to save resources)
+    // Try to play immediately (works in some Chrome/Edge versions if already cached)
+    forcePlay();
+
+    // Intersection Observer to handle play/pause on scroll
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          attemptPlay();
-        } else {
-          video.pause();
-        }
+        if (entry.isIntersecting) forcePlay();
+        else video.pause();
       },
       { threshold: 0.1 }
     );
-
     observer.observe(video);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
+      interactionEvents.forEach(e => window.removeEventListener(e, handleUnlock));
     };
-  }, [attemptPlay, isVideoPlaying]);
+  }, [forcePlay, videoStatus]);
 
   return (
-    <section className={styles.hero} aria-labelledby="hero-heading">
-      <div className={styles.videoWrapper}>
+    <section 
+      className={styles.hero} 
+      style={{ backgroundImage: `url(${posterImage})` }} // THE FAILSAFE: Poster is the section background
+    >
+      <div className={styles.videoContainer}>
         <video
           ref={videoRef}
-          className={`${styles.backgroundVideo} ${isVideoPlaying ? styles.visible : ''}`}
-          poster={posterImage}
+          className={`${styles.videoElement} ${videoStatus === 'playing' ? styles.isVisible : ''}`}
           muted
           loop
           playsInline
@@ -95,34 +99,25 @@ const Introduzione = ({
         >
           <source src={backgroundVideo} type="video/mp4" />
         </video>
-        {/* Placeholder background while video loads */}
-        <div 
-          className={styles.posterFallback} 
-          style={{ backgroundImage: `url(${posterImage})`, opacity: isVideoPlaying ? 0 : 1 }} 
-        />
       </div>
 
-      <div className={styles.overlay} aria-hidden="true" />
+      <div className={styles.overlay} />
 
-      <div className={styles.container}>
+      <div className={styles.contentWrapper}>
         <div className={styles.content}>
-          {badge && <span className={styles.badge}>{badge}</span>}
-          
-          <h1 id="hero-heading" className={styles.title}>
-            {title}
+          <span className={styles.badge}>{badge}</span>
+          <h1 className={styles.title}>
+            {title} <br />
             <span className={styles.highlight}>{highlightedTitle}</span>
           </h1>
-
-          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+          <p className={styles.subtitle}>{subtitle}</p>
         </div>
       </div>
 
       {showScrollIndicator && (
-        <div className={styles.scrollIndicator} aria-hidden="true">
-          <div className={styles.mouse}>
-            <div className={styles.wheel} />
-          </div>
-          <span className={styles.scrollText}>Scorri</span>
+        <div className={styles.scrollHint}>
+          <div className={styles.mouse}><div className={styles.wheel} /></div>
+          <span className={styles.scrollLabel}>SCORRI</span>
         </div>
       )}
     </section>
