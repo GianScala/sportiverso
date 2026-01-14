@@ -14,10 +14,10 @@ interface IntroduzioneProps {
 }
 
 const Introduzione = ({
-  badge = "Educazione Sportiva in Veneto",
+  badge = "Educazione sportiva per bambini e ragazzi in Veneto",
   title = "Benvenuti nello",
   highlightedTitle = "Sportiverso",
-  subtitle = "Dove il gioco incontra la crescita! Scopri i nostri percorsi educativi pensati per bambini e ragazzi dai 3 ai 14 anni.",
+  subtitle = "SPORTIVERSO ASD è un progetto di educazione sportiva per bambini e ragazzi, attivo in Veneto, che utilizza lo sport come strumento di crescita motoria, emotiva e relazionale.",
   backgroundVideo,
   posterImage,
   showScrollIndicator = true,

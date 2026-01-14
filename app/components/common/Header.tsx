@@ -13,11 +13,11 @@ import FacebookIcon from "@/app/icons/FacebookIcon";
 import InstagramIcon from "@/app/icons/InstagramIcon";
 import WhatsappIcon from "@/app/icons/WhatsappIcon";
 
-const WHATSAPP_NUMBER = "+393465827369";
+const WHATSAPP_NUMBER = "+393514049996";
 
 const NAV_ITEMS = [
-  { href: "/percorsi", label: "PERCORSI", icon: <PercorsiIcon /> },
   { href: "/chi-siamo", label: "CHI SIAMO", icon: <ChiSiamoIcon /> },
+  { href: "/percorsi", label: "PERCORSI", icon: <PercorsiIcon /> },
   { href: "/contatti", label: "CONTATTACI", icon: <ContattiIcon /> },
 ];
 

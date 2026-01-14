@@ -10,8 +10,9 @@ import FacebookIcon from '@/app/icons/FacebookIcon';
 import InstagramIcon from '@/app/icons/InstagramIcon';
 
 // Environment variables for sensitive data
-const PIVA = process.env.NEXT_PUBLIC_PIVA || '01234567890';
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+393465827369';
+const PIVA = process.env.NEXT_PUBLIC_PIVA || '04809810270';
+const CODICEFISCALE = process.env.NEXT_PUBLIC_CODICEFISCALE || '90201040277';
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+393514049996';
 
 export default function Footer() {
   const [year, setYear] = useState<number>(new Date().getFullYear());
@@ -31,8 +32,8 @@ export default function Footer() {
 
         {/* Navigation Links */}
         <nav className={styles.links} aria-label="Footer navigation">
-          <Link href="/percorsi">Percorsi</Link>
           <Link href="/chi-siamo">Chi Siamo</Link>
+          <Link href="/percorsi">Percorsi</Link>
           <Link href="/contatti">Contattaci</Link>
         </nav>
 
@@ -75,7 +76,7 @@ export default function Footer() {
         {/* Legal Information */}
         <div className={styles.legal}>
           <small>
-            © {year} Sportiverso ASD · P.IVA {PIVA}
+            © {year} SPORTIVERSO ASD · P.IVA {PIVA} · C.F. {CODICEFISCALE}
           </small>
           <div className={styles.legalLinks}>
             <Link href="/privacy">Privacy Policy</Link>

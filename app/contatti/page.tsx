@@ -36,7 +36,7 @@ export default function ContattaciPage() {
                 Scrivici su WhatsApp
               </a>
               <a
-                href="mailto:info@sportiverso.it"
+                href="mailto:sportiverso@gmail.com"
                 className={`${styles.btn} ${styles.btnEmail}`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
