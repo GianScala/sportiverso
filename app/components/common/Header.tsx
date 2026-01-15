@@ -5,13 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 
-// Import your custom icons from app/icons/
 import PercorsiIcon from "@/app/icons/PercorsiIcon";
 import ChiSiamoIcon from "@/app/icons/ChiSiamoIcon";
 import ContattiIcon from "@/app/icons/ContattiIcon";
 import FacebookIcon from "@/app/icons/FacebookIcon";
 import InstagramIcon from "@/app/icons/InstagramIcon";
 import WhatsappIcon from "@/app/icons/WhatsappIcon";
+
+import { useLockBodyScroll } from "@/app/components/utils/useLockBodyScroll";
 
 const WHATSAPP_NUMBER = "+393514049996";
 
@@ -42,8 +43,12 @@ const SOCIAL_LINKS = [
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  // Robust scroll lock (replaces your old effect)
+  useLockBodyScroll({ enabled: isOpen });
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50);
@@ -55,26 +60,22 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  // IMPORTANT: Close menu on route change so body unlock happens BEFORE ScrollToTop runs.
   useEffect(() => {
-    if (isOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      if (scrollY) window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    }
-  }, [isOpen]);
+    setIsOpen(false);
+  }, [pathname]);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
-  // Header is "active" (white bg, dark text) when scrolled, not home, or menu open
+  // Header is "active" when scrolled, not home, or menu open
   const isHeaderActive = scrolled || !isHome || isOpen;
+
+  // Helper: ensure we close menu immediately when navigating via mobile links/logo
+  const handleNavigate = () => {
+    // Close immediately so scroll unlock happens right away
+    closeMenu();
+  };
 
   return (
     <>
@@ -146,14 +147,14 @@ function Header() {
       )}
 
       {/* Mobile Header */}
-      <header
-        className={`${styles.mobileHeader} ${isHeaderActive ? styles.mobileHeaderActive : ""}`}
-      >
+      <header className={`${styles.mobileHeader} ${isHeaderActive ? styles.mobileHeaderActive : ""}`}>
         <div className={styles.mobileContainer}>
           <Link
             href="/"
-            className={`${styles.mobileLogo} ${isHeaderActive ? styles.mobileLogoDark : styles.mobileLogoLight}`}
-            onClick={closeMenu}
+            className={`${styles.mobileLogo} ${
+              isHeaderActive ? styles.mobileLogoDark : styles.mobileLogoLight
+            }`}
+            onClick={handleNavigate}
           >
             SPORTIVERSO<span>.it</span>
           </Link>
@@ -179,7 +180,7 @@ function Header() {
               key={item.href}
               href={item.href}
               className={styles.mobileNavLink}
-              onClick={closeMenu}
+              onClick={handleNavigate}
               style={{ transitionDelay: isOpen ? `${i * 0.1}s` : "0s" }}
             >
               <span className={styles.linkIcon}>{item.icon}</span>
