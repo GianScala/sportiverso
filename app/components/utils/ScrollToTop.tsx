@@ -1,26 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function ScrollToTop() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Prevent Safari/Chrome from restoring old scroll on route changes
+    // Disable browser scroll restoration (Safari/Chrome mobile restores previous scroll otherwise)
     if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
 
   useEffect(() => {
-    // Scroll after the new page has actually painted (important on mobile)
+    // Scroll after paint (important on iOS Safari + route transitions)
     const raf1 = requestAnimationFrame(() => {
       const raf2 = requestAnimationFrame(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
-        // iOS Safari sometimes needs a tiny extra nudge
+        // iOS sometimes needs a second nudge
         setTimeout(() => {
           window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         }, 50);
@@ -30,7 +29,7 @@ export default function ScrollToTop() {
     });
 
     return () => cancelAnimationFrame(raf1);
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }
