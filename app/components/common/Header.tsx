@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 
@@ -15,6 +16,10 @@ import WhatsappIcon from "@/app/icons/WhatsappIcon";
 import { useLockBodyScroll } from "@/app/components/utils/useLockBodyScroll";
 
 const WHATSAPP_NUMBER = "+393514049996";
+
+// Logo configuration
+const LOGO_WHITE = "/images/logo_white.png"; // White logo for DARK backgrounds
+const LOGO_DARK = "/images/logo_dark.png";   // Dark logo for WHITE backgrounds
 
 const NAV_ITEMS = [
   { href: "/chi-siamo", label: "CHI SIAMO", icon: <ChiSiamoIcon /> },
@@ -69,21 +74,30 @@ function Header() {
   const closeMenu = () => setIsOpen(false);
 
   // Header is "active" when scrolled, not home, or menu open
+  // When active = WHITE background = use DARK logo
+  // When not active (home hero) = DARK background = use WHITE logo
   const isHeaderActive = scrolled || !isHome || isOpen;
 
   // Helper: ensure we close menu immediately when navigating via mobile links/logo
   const handleNavigate = () => {
-    // Close immediately so scroll unlock happens right away
     closeMenu();
   };
 
   return (
     <>
       {/* Home page: fixed logo + sidebars (only when not scrolled) */}
+      {/* DARK background → WHITE logo */}
       {isHome && !scrolled && (
         <>
           <Link href="/" className={styles.homeLogo}>
-            SPORTIVERSO<span>.it</span>
+            <Image
+              src={LOGO_WHITE}
+              alt="Sportiverso"
+              width={140}
+              height={40}
+              priority
+              className={styles.logoImage}
+            />
           </Link>
 
           <nav className={styles.leftSidebar}>
@@ -113,11 +127,19 @@ function Header() {
       )}
 
       {/* Scrolled or not home: horizontal header */}
+      {/* WHITE background → DARK logo */}
       {(scrolled || !isHome) && (
         <header className={styles.desktopHeader}>
           <div className={styles.headerContainer}>
             <Link href="/" className={styles.scrolledLogo}>
-              SPORTIVERSO<span>.it</span>
+              <Image
+                src={LOGO_DARK}
+                alt="Sportiverso"
+                width={130}
+                height={36}
+                priority
+                className={styles.logoImage}
+              />
             </Link>
 
             <nav className={styles.desktopNav}>
@@ -139,7 +161,7 @@ function Header() {
                   aria-label={social.label}
                 >
                   {social.icon}
-                </a>
+              </a>
               ))}
             </div>
           </div>
@@ -147,16 +169,23 @@ function Header() {
       )}
 
       {/* Mobile Header */}
+      {/* isHeaderActive = WHITE bg → DARK logo */}
+      {/* !isHeaderActive = DARK bg (home hero) → WHITE logo */}
       <header className={`${styles.mobileHeader} ${isHeaderActive ? styles.mobileHeaderActive : ""}`}>
         <div className={styles.mobileContainer}>
           <Link
             href="/"
-            className={`${styles.mobileLogo} ${
-              isHeaderActive ? styles.mobileLogoDark : styles.mobileLogoLight
-            }`}
+            className={styles.mobileLogo}
             onClick={handleNavigate}
           >
-            SPORTIVERSO<span>.it</span>
+            <Image
+              src={isHeaderActive ? LOGO_DARK : LOGO_WHITE}
+              alt="Sportiverso"
+              width={110}
+              height={30}
+              priority
+              className={styles.logoImage}
+            />
           </Link>
 
           <button
