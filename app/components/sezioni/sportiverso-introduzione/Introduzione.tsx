@@ -1,22 +1,23 @@
 'use client';
 
 import { memo, useRef, useEffect, useState, useCallback } from 'react';
+import Image from 'next/image';
 import styles from './Introduzione.module.css';
 
 interface IntroduzioneProps {
   badge?: string;
   title?: string;
-  highlightedTitle?: string;
   subtitle?: string;
   backgroundVideo: string;
   posterImage: string;
   showScrollIndicator?: boolean;
 }
 
+const LOGO_WHITE = "/images/logo_white.png"; // White logo for dark background
+
 const Introduzione = ({
   badge = "Educazione sportiva per bambini e ragazzi in Veneto",
   title = "Benvenuti nello",
-  highlightedTitle = "Sportiverso",
   subtitle = "SPORTIVERSO ASD è un progetto di educazione sportiva per bambini e ragazzi, attivo in Veneto, che utilizza lo sport come strumento di crescita motoria, emotiva e relazionale.",
   backgroundVideo,
   posterImage,
@@ -53,6 +54,7 @@ const Introduzione = ({
     };
 
     interactionEvents.forEach(e => window.addEventListener(e, handleUnlock, { passive: true }));
+
     forcePlay();
 
     const observer = new IntersectionObserver(
@@ -62,6 +64,7 @@ const Introduzione = ({
       },
       { threshold: 0.1 }
     );
+
     observer.observe(video);
 
     return () => {
@@ -94,10 +97,21 @@ const Introduzione = ({
       <div className={styles.contentWrapper}>
         <div className={styles.content}>
           {badge && <span className={styles.badge}>{badge}</span>}
+          
           <h1 className={styles.title}>
             <span className={styles.titleLine}>{title}</span>
-            <span className={styles.highlight}>{highlightedTitle}</span>
+            <span className={styles.highlight}>
+              <Image
+                src={LOGO_WHITE}
+                alt="Sportiverso"
+                width={320}
+                height={90}
+                priority
+                className={styles.heroLogo}
+              />
+            </span>
           </h1>
+
           <p className={styles.subtitle}>{subtitle}</p>
         </div>
       </div>

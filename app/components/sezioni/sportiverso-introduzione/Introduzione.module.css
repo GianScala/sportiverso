@@ -9,7 +9,7 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  background-color: #0b0b0b; 
+  background-color: #0b0b0b;
 }
 
 .videoContainer {
@@ -44,13 +44,12 @@
 }
 
 /* ==================== CONTENT ==================== */
-
 .contentWrapper {
   position: relative;
   z-index: 3;
   width: 100%;
   max-width: 1200px;
-  padding: 0 1.2rem; /* Reduced slightly for more text room on tiny phones */
+  padding: 0 1.2rem;
   color: white;
   text-align: center;
 }
@@ -77,24 +76,35 @@
 }
 
 .title {
-  /* UPDATED: Lowered minimum from 2.5rem to 1.8rem for small screens */
   font-size: clamp(1.8rem, 10vw, 6rem);
   font-weight: 900;
-  line-height: 1.1; /* Slightly increased for readability when it wraps */
+  line-height: 1.1;
   text-transform: uppercase;
   margin-bottom: 1.5rem;
-  letter-spacing: -1px; /* Reduced negative spacing to prevent letter overlap on small screens */
+  letter-spacing: -1px;
   animation: fadeInUp 1s ease-out 0.2s backwards;
-  word-wrap: break-word; /* Safety for long words */
+  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
-.highlight {
-  color: #ffffff;
+.titleLine {
   display: block;
-  /* Modern look: stroke might make it hard to read on mobile if too thin, 
-     but keeping it for the style you requested */
-  -webkit-text-stroke: 1px rgba(255,255,255,0.5); 
+  font-size: 0.5em;  /* Adjust this - smaller = smaller text */
+}
+
+.highlight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.heroLogo {
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .subtitle {
@@ -107,7 +117,6 @@
 }
 
 /* ==================== SCROLL INDICATOR ==================== */
-
 .scrollHint {
   position: absolute;
   bottom: 2rem;
@@ -156,15 +165,17 @@
 }
 
 /* ==================== RESPONSIVE FIXES ==================== */
-
 @media (max-width: 768px) {
-  .title { 
-    /* Use clamp for the tablet-to-mobile transition instead of a fixed 3.5rem */
-    font-size: clamp(2rem, 12vw, 3.5rem); 
+  .title {
+    font-size: clamp(2rem, 12vw, 3.5rem);
     letter-spacing: -0.5px;
   }
-  .scrollHint { 
-    /* Keep scroll hint but maybe make it smaller, or hide if it overlaps content */
+
+  .heroLogo {
+    max-width: 280px;
+  }
+
+  .scrollHint {
     opacity: 0.6;
     transform: translateX(-50%) scale(0.8);
   }
@@ -175,10 +186,16 @@
     font-size: 0.65rem;
     padding: 0.4rem 0.8rem;
   }
+
   .title {
-    line-height: 1.2; /* Give it more air on tiny phones */
+    line-height: 1.2;
   }
+
+  .heroLogo {
+    max-width: 220px;
+  }
+
   .scrollHint {
-    display: none; /* Hide only on very small devices to save vertical space */
+    display: none;
   }
 }
