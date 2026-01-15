@@ -182,7 +182,7 @@ export default function CookieBanner() {
                   <p className={styles.bannerText}>
                     Utilizziamo i cookie per migliorare la tua esperienza su Sportiverso.
                     Puoi personalizzare le tue preferenze o accettare tutto per continuare.{' '}
-                    <a href="/privacy-policy" className={styles.privacyLink}>
+                    <a href="/privacy" className={styles.privacyLink}>
                       Privacy Policy
                     </a>
                   </p>

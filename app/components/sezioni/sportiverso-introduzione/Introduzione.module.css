@@ -7,7 +7,6 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Radical Fix: The background image is set here via inline style in JSX */
   background-size: cover;
   background-position: center;
   background-color: #0b0b0b; 
@@ -23,7 +22,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0; /* Hidden until playing */
+  opacity: 0;
   transition: opacity 1.5s ease-in-out;
   pointer-events: none;
 }
@@ -51,7 +50,7 @@
   z-index: 3;
   width: 100%;
   max-width: 1200px;
-  padding: 0 1.5rem;
+  padding: 0 1.2rem; /* Reduced slightly for more text room on tiny phones */
   color: white;
   text-align: center;
 }
@@ -63,38 +62,43 @@
 
 .badge {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   animation: fadeInUp 0.8s ease-out;
 }
 
 .title {
-  font-size: clamp(2.5rem, 10vw, 6rem);
+  /* UPDATED: Lowered minimum from 2.5rem to 1.8rem for small screens */
+  font-size: clamp(1.8rem, 10vw, 6rem);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 1.1; /* Slightly increased for readability when it wraps */
   text-transform: uppercase;
   margin-bottom: 1.5rem;
-  letter-spacing: -2px;
+  letter-spacing: -1px; /* Reduced negative spacing to prevent letter overlap on small screens */
   animation: fadeInUp 1s ease-out 0.2s backwards;
+  word-wrap: break-word; /* Safety for long words */
+  overflow-wrap: break-word;
 }
 
 .highlight {
   color: #ffffff;
   display: block;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.5); /* Modern professional look */
+  /* Modern look: stroke might make it hard to read on mobile if too thin, 
+     but keeping it for the style you requested */
+  -webkit-text-stroke: 1px rgba(255,255,255,0.5); 
 }
 
 .subtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
   opacity: 0.85;
   max-width: 550px;
   margin: 0 auto;
@@ -106,7 +110,7 @@
 
 .scrollHint {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
@@ -117,13 +121,13 @@
 }
 
 .mouse {
-  width: 22px;
-  height: 36px;
+  width: 20px;
+  height: 32px;
   border: 2px solid rgba(255, 255, 255, 0.4);
   border-radius: 20px;
   display: flex;
   justify-content: center;
-  padding-top: 6px;
+  padding-top: 4px;
 }
 
 .wheel {
@@ -135,7 +139,7 @@
 }
 
 .scrollLabel {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 800;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.5);
@@ -143,15 +147,38 @@
 
 @keyframes scrollAnim {
   0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(10px); opacity: 0; }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ==================== RESPONSIVE FIXES ==================== */
+
 @media (max-width: 768px) {
-  .title { font-size: 3.5rem; }
-  .scrollHint { display: none; }
+  .title { 
+    /* Use clamp for the tablet-to-mobile transition instead of a fixed 3.5rem */
+    font-size: clamp(2rem, 12vw, 3.5rem); 
+    letter-spacing: -0.5px;
+  }
+  .scrollHint { 
+    /* Keep scroll hint but maybe make it smaller, or hide if it overlaps content */
+    opacity: 0.6;
+    transform: translateX(-50%) scale(0.8);
+  }
+}
+
+@media (max-width: 480px) {
+  .badge {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .title {
+    line-height: 1.2; /* Give it more air on tiny phones */
+  }
+  .scrollHint {
+    display: none; /* Hide only on very small devices to save vertical space */
+  }
 }

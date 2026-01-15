@@ -9,7 +9,7 @@ interface IntroduzioneProps {
   highlightedTitle?: string;
   subtitle?: string;
   backgroundVideo: string;
-  posterImage: string; // Required to prevent black screen
+  posterImage: string;
   showScrollIndicator?: boolean;
 }
 
@@ -35,7 +35,7 @@ const Introduzione = ({
       await video.play();
       setVideoStatus('playing');
     } catch (err) {
-      // Browser is still blocking; the event listeners below will catch the next move
+      // Browser auto-play policy handling
     }
   }, [videoStatus]);
 
@@ -43,15 +43,7 @@ const Introduzione = ({
     const video = videoRef.current;
     if (!video) return;
 
-    // Aggressive list of events to "unlock" the video engine
-    const interactionEvents = [
-      'pointermove', 
-      'touchstart', 
-      'scroll', 
-      'wheel', 
-      'click', 
-      'keydown'
-    ];
+    const interactionEvents = ['pointermove', 'touchstart', 'scroll', 'wheel', 'click', 'keydown'];
 
     const handleUnlock = () => {
       forcePlay();
@@ -60,13 +52,9 @@ const Introduzione = ({
       }
     };
 
-    // Add listeners
     interactionEvents.forEach(e => window.addEventListener(e, handleUnlock, { passive: true }));
-
-    // Try to play immediately (works in some Chrome/Edge versions if already cached)
     forcePlay();
 
-    // Intersection Observer to handle play/pause on scroll
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) forcePlay();
@@ -85,7 +73,7 @@ const Introduzione = ({
   return (
     <section 
       className={styles.hero} 
-      style={{ backgroundImage: `url(${posterImage})` }} // THE FAILSAFE: Poster is the section background
+      style={{ backgroundImage: `url(${posterImage})` }}
     >
       <div className={styles.videoContainer}>
         <video
@@ -105,9 +93,9 @@ const Introduzione = ({
 
       <div className={styles.contentWrapper}>
         <div className={styles.content}>
-          <span className={styles.badge}>{badge}</span>
+          {badge && <span className={styles.badge}>{badge}</span>}
           <h1 className={styles.title}>
-            {title} <br />
+            <span className={styles.titleLine}>{title}</span>
             <span className={styles.highlight}>{highlightedTitle}</span>
           </h1>
           <p className={styles.subtitle}>{subtitle}</p>
