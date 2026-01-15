@@ -1,5 +1,5 @@
 /* cookies.module.css */
-/* Sportiverso Cookie Banner Styles */
+/* Sportiverso Cookie Banner Styles - Brand Aligned */
 
 /* ============================================
    BANNER CONTAINER
@@ -24,10 +24,10 @@
     opacity: 0;
   }
   
-  /* Decorative gradient line */
+  /* Decorative gradient line - using brand gold */
   .gradientLine {
     height: 4px;
-    background: linear-gradient(90deg, #ff7aa5, #e91e63, #ff7aa5);
+    background: linear-gradient(90deg, var(--header-primary), var(--header-primary-hover), var(--header-primary));
     background-size: 200% 100%;
     animation: shimmer 3s ease-in-out infinite;
   }
@@ -41,7 +41,7 @@
     background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 -10px 40px rgba(233, 30, 99, 0.12);
+    box-shadow: 0 -10px 40px rgba(207, 186, 131, 0.15);
   }
   
   .bannerInner {
@@ -119,12 +119,13 @@
   }
   
   .bannerTitle {
-    font-family: "Bebas Neue", sans-serif;
+    font-family: var(--font-display, "Be Vietnam Pro", sans-serif);
     font-size: 1.125rem;
-    font-weight: 700;
-    color: #12070a;
+    font-weight: 800;
+    color: var(--black, #12070a);
     margin-bottom: 0.25rem;
-    letter-spacing: 0.02em;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
   }
   
   @media (min-width: 640px) {
@@ -134,22 +135,23 @@
   }
   
   .bannerText {
-    font-family: "Archivo", sans-serif;
+    font-family: var(--font-main, "Archivo", sans-serif);
     font-size: 0.875rem;
-    color: rgba(42, 26, 31, 0.8);
+    color: var(--dark-grey, #2a1a1f);
+    opacity: 0.8;
     line-height: 1.5;
   }
   
   .privacyLink {
-    color: #e91e63;
+    color: var(--header-primary-hover, #c1a65e);
     text-decoration: underline;
     text-underline-offset: 2px;
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color var(--transition-fast, 0.2s ease);
   }
   
   .privacyLink:hover {
-    color: #d81b60;
+    color: var(--header-primary, #cfba83);
   }
   
   /* ============================================
@@ -178,15 +180,15 @@
   
   /* Base button styles */
   .btn {
-    font-family: "Archivo", sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-family: var(--font-main, "Archivo", sans-serif);
+    font-size: 0.85rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     padding: 0.625rem 1.25rem;
-    border-radius: 9999px;
+    border-radius: 999px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast, 0.2s ease);
     border: none;
     text-align: center;
   }
@@ -194,9 +196,9 @@
   /* Customize button */
   .btnCustomize {
     composes: btn;
-    color: #2a1a1f;
-    background: #fff3f6;
-    border: 1px solid #ffdce6;
+    color: var(--dark-grey, #2a1a1f);
+    background: #faf7f0;
+    border: 1px solid #e8dfc4;
     order: 3;
   }
   
@@ -207,14 +209,14 @@
   }
   
   .btnCustomize:hover {
-    background: #ffdce6;
-    border-color: rgba(233, 30, 99, 0.3);
+    background: #f0e9d8;
+    border-color: var(--header-primary, #cfba83);
   }
   
   /* Reject button */
   .btnReject {
     composes: btn;
-    color: #a78993;
+    color: var(--mid-grey, #a78993);
     background: transparent;
     border: 1px solid rgba(167, 137, 147, 0.3);
     order: 2;
@@ -222,16 +224,16 @@
   
   .btnReject:hover {
     background: rgba(167, 137, 147, 0.1);
-    color: #2a1a1f;
+    color: var(--dark-grey, #2a1a1f);
   }
   
-  /* Accept button */
+  /* Accept button - using brand gold gradient */
   .btnAccept {
     composes: btn;
     font-weight: 700;
-    color: #ffffff;
-    background: linear-gradient(135deg, #ff7aa5, #e91e63);
-    box-shadow: 0 10px 25px rgba(233, 30, 99, 0.25);
+    color: var(--white, #ffffff);
+    background: linear-gradient(135deg, var(--header-primary, #cfba83), var(--header-primary-hover, #c1a65e));
+    box-shadow: 0 10px 25px rgba(193, 166, 94, 0.3);
     padding: 0.625rem 1.5rem;
     order: 1;
   }
@@ -243,7 +245,7 @@
   }
   
   .btnAccept:hover {
-    box-shadow: 0 14px 35px rgba(233, 30, 99, 0.35);
+    box-shadow: 0 14px 35px rgba(193, 166, 94, 0.4);
     transform: scale(1.02);
   }
   
@@ -289,7 +291,7 @@
   .modal {
     position: relative;
     width: 100%;
-    background: #ffffff;
+    background: var(--white, #ffffff);
     max-height: 85vh;
     overflow: hidden;
     border-radius: 1.5rem 1.5rem 0 0;
@@ -336,8 +338,8 @@
   .modalHeader {
     position: sticky;
     top: 0;
-    background: #ffffff;
-    border-bottom: 1px solid #ffdce6;
+    background: var(--white, #ffffff);
+    border-bottom: 1px solid #e8dfc4;
     padding: 1rem 1.25rem;
     z-index: 10;
   }
@@ -364,20 +366,21 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.75rem;
-    background: linear-gradient(135deg, #ff7aa5, #e91e63);
+    background: linear-gradient(135deg, var(--header-primary, #cfba83), var(--header-primary-hover, #c1a65e));
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 15px -3px rgba(233, 30, 99, 0.2);
+    box-shadow: 0 10px 15px -3px rgba(193, 166, 94, 0.25);
     font-size: 1.125rem;
   }
   
   .modalTitle {
-    font-family: "Bebas Neue", sans-serif;
+    font-family: var(--font-display, "Be Vietnam Pro", sans-serif);
     font-size: 1.25rem;
-    font-weight: 700;
-    color: #12070a;
-    letter-spacing: 0.02em;
+    font-weight: 800;
+    color: var(--black, #12070a);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
   }
   
   @media (min-width: 640px) {
@@ -393,16 +396,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #a78993;
+    color: var(--mid-grey, #a78993);
     background: transparent;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast, 0.2s ease);
   }
   
   .closeButton:hover {
-    color: #12070a;
-    background: #fff3f6;
+    color: var(--black, #12070a);
+    background: #faf7f0;
   }
   
   .closeIcon {
@@ -411,9 +414,10 @@
   }
   
   .modalDescription {
-    font-family: "Archivo", sans-serif;
+    font-family: var(--font-main, "Archivo", sans-serif);
     font-size: 0.875rem;
-    color: rgba(42, 26, 31, 0.7);
+    color: var(--dark-grey, #2a1a1f);
+    opacity: 0.7;
     margin-top: 0.5rem;
     line-height: 1.5;
   }
@@ -444,24 +448,24 @@
   .optionCard {
     padding: 1rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(255, 220, 230, 0.5);
-    background: rgba(255, 243, 246, 0.5);
-    transition: border-color 0.2s ease;
+    border: 1px solid rgba(232, 223, 196, 0.5);
+    background: rgba(250, 247, 240, 0.5);
+    transition: border-color var(--transition-fast, 0.2s ease);
   }
   
   .optionCard:hover {
-    border-color: rgba(233, 30, 99, 0.3);
+    border-color: var(--header-primary, #cfba83);
   }
   
   /* Necessary cookies - special styling */
   .optionCardNecessary {
     composes: optionCard;
-    background: linear-gradient(135deg, #fff3f6, rgba(255, 220, 230, 0.3));
-    border-color: #ffdce6;
+    background: linear-gradient(135deg, #faf7f0, rgba(232, 223, 196, 0.3));
+    border-color: #e8dfc4;
   }
   
   .optionCardNecessary:hover {
-    border-color: #ffdce6;
+    border-color: #e8dfc4;
   }
   
   .optionContent {
@@ -490,14 +494,14 @@
   
   .optionIconNecessary {
     composes: optionIcon;
-    background: linear-gradient(135deg, #ff7aa5, #e91e63);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--header-primary, #cfba83), var(--header-primary-hover, #c1a65e));
+    color: var(--white, #ffffff);
   }
   
   .optionIconDefault {
     composes: optionIcon;
     background: rgba(167, 137, 147, 0.2);
-    color: #a78993;
+    color: var(--mid-grey, #a78993);
   }
   
   .optionIconSvg {
@@ -510,10 +514,10 @@
   }
   
   .optionTitle {
-    font-family: "Archivo", sans-serif;
+    font-family: var(--font-main, "Archivo", sans-serif);
     font-size: 0.875rem;
     font-weight: 700;
-    color: #12070a;
+    color: var(--black, #12070a);
   }
   
   @media (min-width: 640px) {
@@ -523,9 +527,10 @@
   }
   
   .optionDescription {
-    font-family: "Archivo", sans-serif;
+    font-family: var(--font-main, "Archivo", sans-serif);
     font-size: 0.75rem;
-    color: rgba(42, 26, 31, 0.7);
+    color: var(--dark-grey, #2a1a1f);
+    opacity: 0.7;
     margin-top: 0.125rem;
     line-height: 1.4;
   }
@@ -536,13 +541,13 @@
     }
   }
   
-  /* Always active badge */
+  /* Always active badge - using brand gold */
   .alwaysActiveBadge {
-    font-family: "Archivo", sans-serif;
+    font-family: var(--font-main, "Archivo", sans-serif);
     font-size: 0.75rem;
     font-weight: 600;
-    color: #e91e63;
-    background: rgba(233, 30, 99, 0.1);
+    color: var(--header-primary-hover, #c1a65e);
+    background: rgba(207, 186, 131, 0.15);
     padding: 0.25rem 0.5rem;
     border-radius: 9999px;
     white-space: nowrap;
@@ -588,15 +593,16 @@
     left: 2px;
     width: 1.5rem;
     height: 1.5rem;
-    background: #ffffff;
+    background: var(--white, #ffffff);
     border-radius: 9999px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
+  /* Toggle checked state - using brand gold */
   .toggleInput:checked + .toggleTrack {
-    background: linear-gradient(135deg, #ff7aa5, #e91e63);
-    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+    background: linear-gradient(135deg, var(--header-primary, #cfba83), var(--header-primary-hover, #c1a65e));
+    box-shadow: 0 4px 15px rgba(193, 166, 94, 0.35);
   }
   
   .toggleInput:checked + .toggleTrack::after {
@@ -604,7 +610,7 @@
   }
   
   .toggleInput:focus-visible + .toggleTrack {
-    outline: 2px solid #e91e63;
+    outline: 2px solid var(--header-primary, #cfba83);
     outline-offset: 2px;
   }
   
@@ -614,8 +620,8 @@
   .modalFooter {
     position: sticky;
     bottom: 0;
-    background: #ffffff;
-    border-top: 1px solid #ffdce6;
+    background: var(--white, #ffffff);
+    border-top: 1px solid #e8dfc4;
     padding: 1rem 1.25rem;
     display: flex;
     flex-direction: column;

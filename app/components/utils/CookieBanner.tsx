@@ -17,22 +17,22 @@ const getCookie = (name: string): string | null => {
 };
 
 // ============================================
-// Icon Components
+// Icon Components (Updated with brand gold colors)
 // ============================================
 const CookieIcon = () => (
   <svg viewBox="0 0 64 64" className={styles.cookieIcon} aria-hidden="true">
     <defs>
       <linearGradient id="cookieGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#ff7aa5" />
-        <stop offset="100%" stopColor="#e91e63" />
+        <stop offset="0%" stopColor="#cfba83" />
+        <stop offset="100%" stopColor="#c1a65e" />
       </linearGradient>
     </defs>
     <circle cx="32" cy="32" r="28" fill="url(#cookieGradient)" />
-    <circle cx="22" cy="24" r="4" fill="#fff3f6" opacity="0.9" />
-    <circle cx="40" cy="20" r="3" fill="#fff3f6" opacity="0.9" />
-    <circle cx="26" cy="40" r="5" fill="#fff3f6" opacity="0.9" />
-    <circle cx="44" cy="36" r="4" fill="#fff3f6" opacity="0.9" />
-    <circle cx="34" cy="30" r="3" fill="#fff3f6" opacity="0.9" />
+    <circle cx="22" cy="24" r="4" fill="#faf7f0" opacity="0.9" />
+    <circle cx="40" cy="20" r="3" fill="#faf7f0" opacity="0.9" />
+    <circle cx="26" cy="40" r="5" fill="#faf7f0" opacity="0.9" />
+    <circle cx="44" cy="36" r="4" fill="#faf7f0" opacity="0.9" />
+    <circle cx="34" cy="30" r="3" fill="#faf7f0" opacity="0.9" />
   </svg>
 );
 
