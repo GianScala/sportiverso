@@ -3,14 +3,11 @@
   position: fixed;
   top: 2rem;
   left: 2rem;
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: white;
-  text-decoration: none;
   z-index: 100;
-  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
-.homeLogo span { color: var(--header-primary, #ff007f); }
 
 .leftSidebar {
   position: fixed;
@@ -22,6 +19,7 @@
   gap: 1rem;
   z-index: 100;
 }
+
 .sidebarLink {
   display: flex;
   align-items: center;
@@ -32,7 +30,13 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.sidebarIcon { width: 24px; height: 24px; opacity: 0.8; }
+
+.sidebarIcon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
 .sidebarLabel {
   font-size: 0.75rem;
   font-weight: 800;
@@ -41,6 +45,7 @@
   white-space: nowrap;
   transition: all 0.4s ease;
 }
+
 .sidebarLink:hover .sidebarLabel {
   opacity: 1;
   max-width: 150px;
@@ -57,13 +62,17 @@
   gap: 1.5rem;
   z-index: 100;
 }
+
 .socialLink {
   color: white;
   width: 20px;
   opacity: 0.6;
   transition: opacity 0.3s;
 }
-.socialLink:hover { opacity: 1; }
+
+.socialLink:hover {
+  opacity: 1;
+}
 
 /* ==================== GLOBAL HORIZONTAL HEADER ==================== */
 .desktopHeader {
@@ -74,16 +83,18 @@
   height: 5rem;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(15px) saturate(180%);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   z-index: 110;
   display: flex;
   align-items: center;
   animation: slideDown 0.5s ease forwards;
 }
+
 @keyframes slideDown {
   from { transform: translateY(-100%); }
   to { transform: translateY(0); }
 }
+
 .headerContainer {
   width: 100%;
   max-width: 1400px;
@@ -93,14 +104,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .scrolledLogo {
-  font-weight: 900;
-  font-size: 1.25rem;
-  color: #111;
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
-.scrolledLogo span { color: var(--header-primary, #ff007f); }
-.desktopNav { display: flex; gap: 2.5rem; }
+
+.desktopNav {
+  display: flex;
+  gap: 2.5rem;
+}
+
 .navLink {
   text-decoration: none;
   color: #444;
@@ -109,10 +124,28 @@
   letter-spacing: 0.05em;
   transition: color 0.3s;
 }
-.navLink:hover { color: var(--header-primary, #ff007f); }
-.headerSocials { display: flex; gap: 1rem; }
-.headerSocialIcon { width: 18px; color: #888; transition: color 0.3s; }
-.headerSocialIcon:hover { color: #111; }
+
+.navLink:hover {
+  color: var(--header-primary);
+}
+
+.headerSocials {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.headerSocialIcon {
+  width: 18px;
+  color: #888;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.headerSocialIcon:hover {
+  color: #111;
+}
 
 /* ==================== MOBILE HEADER ==================== */
 .mobileHeader {
@@ -125,6 +158,7 @@
   z-index: 200;
   transition: background 0.4s ease, backdrop-filter 0.4s ease;
 }
+
 .mobileHeaderActive {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
@@ -132,23 +166,21 @@
 }
 
 .mobileContainer {
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 }
 
 .mobileLogo {
-  font-weight: 900;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  letter-spacing: -0.5px;
-  transition: color 0.3s ease;
+  height: 100%;
 }
-.mobileLogo span { color: var(--header-primary, #ff007f); }
-.mobileLogoLight { color: white; }
-.mobileLogoDark { color: #111; }
 
 /* Hamburger / X Toggle */
 .menuToggle {
@@ -163,24 +195,35 @@
   gap: 6px;
   cursor: pointer;
   position: relative;
+  padding: 0;
+  margin: 0;
 }
+
 .bar {
   width: 24px;
   height: 2px;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
-.barLight { background: white; }
-.barDark { background: #111; }
+
+.barLight {
+  background: white;
+}
+
+.barDark {
+  background: #111;
+}
 
 /* Transform hamburger to X when open */
 .menuToggleOpen .bar:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
+
 .menuToggleOpen .bar:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
+
 .menuToggleOpen .bar:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
@@ -196,8 +239,9 @@
   transition: opacity 0.5s ease, visibility 0.5s ease;
   display: flex;
   flex-direction: column;
-  padding-top: 4.5rem; /* Account for header height */
+  padding-top: 4.5rem;
 }
+
 .mobileMenuOpen {
   opacity: 1;
   visibility: visible;
@@ -212,6 +256,7 @@
   gap: 1rem;
   overflow-y: auto;
 }
+
 .mobileNavLink {
   display: flex;
   align-items: center;
@@ -229,16 +274,19 @@
   transform: translateY(20px);
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
 .mobileMenuOpen .mobileNavLink {
   opacity: 1;
   transform: translateY(0);
 }
+
 .linkIcon {
   width: 32px;
   height: 32px;
   flex-shrink: 0;
   opacity: 0.8;
 }
+
 .linkText {
   flex: 1;
 }
@@ -249,11 +297,13 @@
   border-top: 1px solid #eee;
   flex-shrink: 0;
 }
+
 .socialRow {
   display: flex;
   justify-content: center;
   gap: 2.5rem;
 }
+
 .mobileSocialBtn {
   width: 60px;
   height: 60px;
@@ -265,16 +315,27 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease;
 }
+
 .mobileSocialBtn svg {
   width: 28px;
   height: 28px;
   color: #111;
 }
+
 .mobileSocialBtn:active {
   transform: scale(0.9);
 }
 
-/* RESPONSIVE */
+/* ==================== LOGO IMAGE ==================== */
+.logoImage {
+  display: block;
+  height: auto;
+  width: auto;
+  max-height: 40px;
+  object-fit: contain;
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 1024px) {
   .homeLogo,
   .leftSidebar,
@@ -282,23 +343,42 @@
   .desktopHeader {
     display: none !important;
   }
+
   .mobileHeader {
     display: block;
   }
 }
 
 @media (max-width: 480px) {
-  .mobileNavLink { font-size: 1.55rem; padding: 1.3rem 1.5rem; }
-  .linkIcon { width: 28px; height: 28px; }
-  .socialRow { gap: 2rem; }
-  .mobileSocialBtn { width: 55px; height: 55px; }
-  .mobileSocialBtn svg { width: 26px; height: 26px; }
-}
+  .mobileContainer {
+    padding: 0 1rem;
+  }
 
+  .logoImage {
+    max-height: 32px;
+  }
 
-.logoImage {
-  height: auto;
-  width: auto;
-  max-height: 100%;
-  object-fit: contain;
+  .mobileNavLink {
+    font-size: 1.55rem;
+    padding: 1.3rem 1.5rem;
+  }
+
+  .linkIcon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .socialRow {
+    gap: 2rem;
+  }
+
+  .mobileSocialBtn {
+    width: 55px;
+    height: 55px;
+  }
+
+  .mobileSocialBtn svg {
+    width: 26px;
+    height: 26px;
+  }
 }
